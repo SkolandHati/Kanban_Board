@@ -1,15 +1,25 @@
 import { defineStore } from 'pinia'
 
 export const useStore = defineStore('store', {
-    state: () => ([]),
+    state: () => ({
+        colums: [
+            {
+                id: 1,
+                name: 'ewgwegweg',
+                task: [21324, 'gewgdsgfg']
+            },
+            {
+                id: 2,
+                name: 'ewgwe3242 3525325gweg',
+                task: [2132421,'regergerh', 34344, 'ewrew3423r32']
+            }
+        ]
+    }),
     getters: {
-        addColums: (state, data) => {
-            console.log(this.state, data)
-        },
     },
     actions: {
-        pushTaskInStore(data) {
-            this.addColums(data)
+        addTaskInStore(data) {
+            console.log(data)
         },
     },
 })
