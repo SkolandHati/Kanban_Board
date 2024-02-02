@@ -1,3 +1,3 @@
 
-let Enum = ['appendTask']
+let Enum = ['appendColum']
 export default Enum

@@ -1,23 +1,33 @@
 <template>
   <transition name="modal">
-    <div id="modal-shadow" class="lg:block lg:items-center lg:justify-between border rounded">
+    <div id="modal-shadow"
+         class="lg:block lg:items-center lg:justify-between border rounded">
       <div id="modal">
         <div class="grid min-w-0 flex-1r py-2 pb-5 gap-y-3">
-          <h3 class="relative flex justify-center text-center">Название колонки</h3>
-          <h3 class="relative flex justify-center text-center text-red-800">Сначала введите название колонки</h3>
-          <input v-bind="colums" placeholder="Введите название колонки" id="input" class=" border rounded flex font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight justify-center">
+          <h3 v-if="show"
+              class="relative flex justify-center text-center">Название колонки</h3>
+          <h3 v-else
+              class="relative flex justify-center text-center text-red-800">Сначала введите название колонки</h3>
+          <input v-model="nameColums"
+                 placeholder="Введите название колонки"
+                 id="input"
+                 class="border rounded flex font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight justify-center">
         </div>
         <ButtonColums add-item="Добавить задачу"
                       delite-item="Закрыть окно"
-                      :messageTask="colums"></ButtonColums>
+                      @append-task="upTask"
+                      @close-window="closeModal"></ButtonColums>
         <hr>
-        <div class="block_task" v-if="!!colums.length">
-          <TaskComponent v-for="item in colums"
-                         :item-task="item">
+        <div class="block_task" v-if="!!tasksColums.length">
+          <TaskComponent v-for="(item , i) in tasksColums"
+                         :key="i"
+                         :item-task="item"
+                         :modelValue="item.text"
+                         v-model="item.text">
           </TaskComponent>
         </div>
         <hr>
-        <ButtonTask :name="'Создать колонку'" @click="submitTask"></ButtonTask>
+        <ButtonTask :name="'Создать колонку'" @appendColumInStore="appendTaskInStore"></ButtonTask>
       </div>
     </div>
   </transition>
@@ -28,18 +38,47 @@
   import ButtonColums from "~/components/buttons/ButtonColums.vue";
   import ButtonTask from "~/components/buttons/ButtonTask.vue";
   import TaskComponent from "~/components/Card/TaskComponent.vue";
+  import {useStore} from "~/store/store.js"
+  import Enum from "~/Enum/EnumColums.js";
   import {ref} from "vue";
 
-  let colums = ref('')
-  // let show = ref(false)
-  // const closeModal = function () { this.show = false }
+  const submitColum = useStore()
 
-  const submitTask = function () {
+  let show = ref(true)
+
+  let columsTask = ref({})
+  let nameColums = ref('')
+
+  let tasksColums = ref([])
+  let textTask = ref('')
+
+  let idTask = ref(1)
+  const appendTaskInStore = function (marker){
+    switch (marker){
+      case Enum[0]:
+        columsTask.value.nameColums = nameColums.value
+        columsTask.value.tasks = tasksColums.value
+        submitColum.addColumInStore(columsTask.value)
+        closeModal()
+        break;
+    }
   }
-  const appendTask = function () {
-    let i = 1
-    colums.value.id = i
-    i++
+  function upTask() {
+    if (!nameColums.value.length){
+      show.value = !show.value
+      return
+    }
+    let task = {}
+    show.value = true
+    task.id = idTask.value
+    task.text = textTask.value
+    tasksColums.value.push(task)
+    idTask.value++
+  }
+
+  const emits = defineEmits(['closeWindow'])
+  function closeModal(){
+    emits('closeWindow')
   }
 
 </script>
@@ -50,6 +89,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    height: 100%;
     min-height: 100%;
     width: 100%;
     background: rgba(0, 0, 0, 0.39);

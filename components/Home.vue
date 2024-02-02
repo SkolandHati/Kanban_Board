@@ -5,14 +5,16 @@
       <p class="mt-2 text-lg leading-8 text-gray-600 text-center">Распиши свою жизни на задачи</p>
       <button-task :name="'Новая колонка'" @click="showModal"></button-task>
     </header>
-    <ModalWindow v-show="show"></ModalWindow>
     <hr>
-    <div class="grid grid-cols-4 gap-4 p-7" v-if="addTask">
-      <Card v-for="item in addTask.$state.colums"
-            :key="item.id"
+    <div class="grid grid-cols-4 gap-4 p-7" v-if="colums.$state.colums">
+      <Card v-for="(item, i) in colums.$state.colums"
+            :key="i"
             :itemTask="item" ></Card>
     </div>
   </main>
+  <ModalWindow class="w-full h-full"
+               v-show="show"
+               @close-window="showModal"></ModalWindow>
 </template>
 
 <script setup>
@@ -23,11 +25,11 @@
   import {useStore} from "@/store/store"
   import {ref} from "vue";
 
-  const addTask = useStore()
+  const colums = useStore()
 
-  let show = ref(true)
+  let show = ref(false)
   const showModal = function () {
-      show.value = true
+      show.value = !show.value
     }
 
 </script>
