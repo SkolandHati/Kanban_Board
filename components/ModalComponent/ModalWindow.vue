@@ -21,9 +21,10 @@
         <div class="block_task" v-if="!!tasksColums.length">
           <TaskComponent v-for="(item , i) in tasksColums"
                          :key="i"
-                         :item-task="item"
                          :modelValue="item.text"
-                         v-model="item.text">
+                         :setting="true"
+                         v-model="item.text"
+                         @delete-task="taskDelet(item.id)">
           </TaskComponent>
         </div>
         <hr>
@@ -60,6 +61,11 @@
         columsTask.value.tasks = tasksColums.value
         submitColum.addColumInStore(columsTask.value)
         closeModal()
+        columsTask.value = {}
+        nameColums.value = ''
+        tasksColums.value = []
+        textTask.value = ''
+        idTask.value = 1
         break;
     }
   }
@@ -74,6 +80,11 @@
     task.text = textTask.value
     tasksColums.value.push(task)
     idTask.value++
+  }
+
+  function taskDelet(data){
+    let item = tasksColums.value.find(i => i.id === data)
+    tasksColums.value.splice(item, 1)
   }
 
   const emits = defineEmits(['closeWindow'])
@@ -106,10 +117,9 @@
     transform: translate(-50%, -50%)
   }
 
-  .modal-enter-active, .modal-leave-active {
+  .modal-leave-active {
     transition: opacity 2s
   }
-
   .modal-enter-active, .modal-leave-to {
     opacity: 0
   }

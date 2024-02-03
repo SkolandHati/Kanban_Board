@@ -9,7 +9,7 @@
     <div class="grid grid-cols-4 gap-4 p-7" v-if="colums.$state.colums">
       <Card v-for="(item, i) in colums.$state.colums"
             :key="i"
-            :itemTask="item" ></Card>
+            :itemColum="item" ></Card>
     </div>
   </main>
   <ModalWindow class="w-full h-full"
@@ -20,7 +20,7 @@
 <script setup>
 
   import ButtonTask from "~/components/buttons/ButtonTask.vue";
-  import ModalWindow from "~/components/Card/ModalWindow.vue";
+  import ModalWindow from "~/components/ModalComponent/ModalWindow.vue";
   import Card from "@/components/Card/Card.vue"
   import {useStore} from "@/store/store"
   import {ref} from "vue";
