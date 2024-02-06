@@ -21,9 +21,11 @@
 
   import ButtonTask from "~/components/buttons/ButtonTask.vue";
   import ModalWindow from "~/components/ModalComponent/ModalWindow.vue";
-  import Card from "@/components/Card/Card.vue"
-  import {useStore} from "@/store/store"
+  import Card from "~/components/Card/Card.vue"
+  import {useStore} from "~/store/store.js"
   import {ref} from "vue";
+
+  const name = ref('Home')
 
   const colums = useStore()
 

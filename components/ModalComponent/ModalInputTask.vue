@@ -43,7 +43,6 @@
       check.value = true
       return
     }
-    console.log(text.value)
     emits("submitTaskInColum", text.value)
     close()
   }
