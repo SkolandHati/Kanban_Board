@@ -28,7 +28,8 @@
           </TaskComponent>
         </div>
         <hr>
-        <ButtonTask :name="'Создать колонку'" @appendColumInStore="appendTaskInStore"></ButtonTask>
+        <ButtonTask :name="'Создать колонку'"
+                    @appendColumInStore="appendTaskInStore"></ButtonTask>
       </div>
     </div>
   </transition>
@@ -40,7 +41,6 @@
   import ButtonTask from "~/components/buttons/ButtonTask.vue";
   import TaskComponent from "~/components/Card/TaskComponent.vue";
   import {useStore} from "~/store/store.js"
-  import Enum from "~/Enum/EnumColums.js";
   import {ref} from "vue";
 
   const submitColum = useStore()
@@ -54,20 +54,16 @@
   let textTask = ref('')
 
   let idTask = ref(1)
-  const appendTaskInStore = function (marker){
-    switch (marker){
-      case Enum[0]:
-        columsTask.value.nameColums = nameColums.value
-        columsTask.value.tasks = tasksColums.value
-        submitColum.addColumInStore(columsTask.value)
-        closeModal()
-        columsTask.value = {}
-        nameColums.value = ''
-        tasksColums.value = []
-        textTask.value = ''
-        idTask.value = 1
-        break;
-    }
+  const appendTaskInStore = function (){
+    columsTask.value.nameColums = nameColums.value
+    columsTask.value.tasks = tasksColums.value
+    submitColum.addColumInStore(columsTask.value)
+    closeModal()
+    columsTask.value = {}
+    nameColums.value = ''
+    tasksColums.value = []
+    textTask.value = ''
+    idTask.value = 1
   }
   function upTask() {
     if (!nameColums.value.length){

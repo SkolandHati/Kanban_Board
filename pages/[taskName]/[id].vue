@@ -7,11 +7,10 @@
             Show full screen
           </div>
         </div>
-        <div class="px-4 py-2 bg-white border-solid border-2 border-indigo-600 rounded dark:bg-gray-700">
-          <textarea :value="task.text" id="editor" rows="8" class="outline-none block w-full px-0 text-sm text-gray-800 bg-white dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Write an article..." required></textarea>
-        </div>
+        <AllTextTask :model-value="task.text"
+                     v-model="task.text"></AllTextTask>
       <div class="gap-5 flex">
-        <button @click.prevent="getTask(taskName, id)"
+        <button @click.prevent="updateTask(taskName, id, task.text)"
                 type="submit"
                 class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
           Применить изменения
@@ -27,6 +26,7 @@
 
 <script setup>
 
+    import AllTextTask from "~/components/InputsComponent/AllTextTask.vue";
     import {useRouter} from "vue-router";
     import {useStore} from "~/store/store.js"
     import { onMounted } from 'vue'
@@ -38,6 +38,11 @@
 
     const task = ref({})
 
+    function updateTask(nameColum, idTask, newTextTask){
+      state.updateTask(nameColum, idTask, newTextTask)
+      goHome()
+    }
+
     async function getTask(taskName, idTask){
       let indexColum = state.colums.findIndex(i => i.nameColums === taskName)
       let item = state.colums[indexColum].tasks.findIndex(i => i.id === Number(idTask))
@@ -46,7 +51,6 @@
 
     onMounted(() => {
       getTask(taskName, id)
-      console.log(task.value)
     })
     function goHome(){
       router.push(`/`)

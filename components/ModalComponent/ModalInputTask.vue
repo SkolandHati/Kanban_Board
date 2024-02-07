@@ -38,7 +38,6 @@
   let check = ref(false)
 
   function addTask(){
-    console.log(text.value)
     if (!text.value.length){
       check.value = true
       return

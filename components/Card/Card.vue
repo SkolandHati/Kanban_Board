@@ -69,7 +69,6 @@
 
   function buttonDeleteTaskInColums(data) {
     store.deleteTaskInColums(data, props.itemColum.nameColums)
-    console.log(data)
     if (!props.itemColum.tasks.length){
       store.deliteColum(props.itemColum.nameColums)
     }
